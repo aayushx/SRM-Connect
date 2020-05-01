@@ -1,0 +1,63 @@
+page-feedback {
+    .master{
+        background-image:linear-gradient(135deg,#55d6d0,#49b3cd,#4b74a4,#5d4e71);
+        text-align: center;
+	    background-size: 400% 400%;
+	-webkit-animation: gradientBG 10s ease infinite;
+	        animation: gradientBG 10s ease infinite;
+    } 
+    @-webkit-keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    @keyframes gradientBG {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    } 
+    ion-item{
+        background-color:rgb(190, 218, 224);
+        background: transparent !important;
+    }
+#head{
+    font-size: 30px;
+    font-weight: bold;
+    color: rgb(24, 6, 90);
+}
+#top{
+    text-align: center;
+}
+#menu{
+    background-color:transparent;
+    float: left;
+    font-size: xx-large;
+}
+#join{
+    border: 2px;
+    border-style: solid;
+    border-color: rgb(24, 6, 90);
+    border-radius: 8px;
+}
+h2,h3,p{
+    color: rgb(24, 6, 90);
+}
+.button{
+    background-color:rgb(24, 6, 90);
+    color: honeydew;
+    width: 30%; 
+        border-radius: 8px; 
+}
+}

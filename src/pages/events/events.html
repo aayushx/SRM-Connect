@@ -1,0 +1,171 @@
+     <ion-content class="master" padding>
+      <div id="top">
+        <button id="menu" menuToggle>
+          <ion-icon name="menu"></ion-icon>
+        </button>
+
+      <h2 id="head">Events </h2>
+    </div>
+      <div id="segment" padding>
+        <ion-segment class="seg" [(ngModel)]="selectedSegment" >
+          <ion-segment-button (click)="all()" class="tab" value="all">
+            All
+          </ion-segment-button>
+          <ion-segment-button (click)="favourites()" class="tab" value="favourites">
+            Favourites
+          </ion-segment-button>
+          <ion-segment-button class="tab" value="interest">
+            Interest
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+  
+      <!-- [virtualScroll]="events" [approxItemHeight]="'100px'"  *virtualItem="let event"   -->
+      <div [ngSwitch]="selectedSegment">
+        <div >
+        <ion-list *ngSwitchCase="'all'" id="first" >
+           
+          <ion-card  *ngFor="let event of events">
+
+            <ion-card-header (click)="next1(event.eventid)">
+              <button id="host">
+                <ion-icon style="font-size: 50px;" name="contact"></ion-icon>
+              </button>
+              <span id="name" name="date">{{event.venue}}</span><br>
+              {{event.date}}
+            </ion-card-header>
+            <img src="../assets/imgs/images.jpg" (click)="next1(event.eventid)" />
+            <ion-card-content (click)="next1(event.eventid)">
+              <ion-card-title name="title">
+                {{event.title}}
+              </ion-card-title>
+              <hr>
+              <p name="des">
+                {{event.description}}
+              </p>
+            </ion-card-content>
+            <div>
+            <ion-grid id="grid">
+            <ion-row>
+              <ion-col>
+                <button (click)="next2(event.eventid)" ion-button icon-start clear small>
+                  <ion-icon style="font-size: xx-large; text-align: center;" name="star-outline"></ion-icon>
+                  <div></div>
+                </button>
+              </ion-col>  
+              
+              <ion-col>
+                <button ion-button icon-start clear small>
+                  <ion-icon style="font-size: xx-large; text-align: center;" name="call"></ion-icon>
+                  <div></div>
+                </button>
+              </ion-col>  
+              
+              <ion-col>
+                <button ion-button icon-start clear small>
+                  <ion-icon style="font-size: xx-large; text-align: center;" name="share"></ion-icon>
+                  <div></div>
+                </button>
+              </ion-col>
+              
+            </ion-row>
+          </ion-grid></div>
+          </ion-card>
+          </ion-list>
+          </div>
+        </div>
+          
+          <div [ngSwitch]="selectedSegment">
+            <ion-list class="favo" *ngSwitchCase="'favourites'" >
+
+              <ion-card *ngFor="let fav of favs">
+                <ion-card-header (click)="next1(fav.eventid)">
+                  <button id="host">
+                    <ion-icon style="font-size: 50px;" name="contact"></ion-icon>
+                  </button>
+                  <span id="name" name="date">{{fav.venue}}</span><br>
+                  {{fav.date}}
+                </ion-card-header>
+                <img src="../assets/imgs/images.jpg" (click)="next1(fav.eventid)" />
+                <ion-card-content (click)="next1(fav.eventid)">
+                  <ion-card-title name="title">
+                    {{fav.title}}
+                  </ion-card-title>
+                  <hr>
+                  <p name="des">
+                    {{fav.description}}
+                  </p>
+                </ion-card-content>
+                <ion-grid id="grid">
+                <ion-row>
+                  <ion-col>
+                    <button ion-button icon-start clear small (click)="Delete(fav.eventid)">
+                      <ion-icon style="font-size: xx-large; text-align: center;" name="star"></ion-icon>
+                      <div></div>
+                    </button>
+                  </ion-col>  
+                  
+                  <ion-col>
+                    <button ion-button icon-start clear small>
+                      <ion-icon style="font-size: xx-large; text-align: center;" name="call"></ion-icon>
+                      <div></div>
+                    </button>
+                  </ion-col>  
+                  
+                  <ion-col>
+                    <button ion-button icon-start clear small>
+                      <ion-icon style="font-size: xx-large; text-align: center;" name="share-alt"></ion-icon>
+                      <div></div>
+                    </button>
+                  </ion-col>
+                  
+                </ion-row>
+              </ion-grid>
+              </ion-card>
+            </ion-list>
+          </div>
+
+          <div [ngSwitch]="selectedSegment">
+            <ion-list class="fav" *ngSwitchCase="'interest'">
+              Choose what to see
+              <form id="join" >
+
+                <ion-item no-lines>
+                  <ion-label>Technical</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                <ion-item no-lines>
+                  <ion-label>Fun</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                <ion-item no-lines>
+                  <ion-label>Recruitment</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                <ion-item no-lines>
+                  <ion-label>Social</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                <ion-item no-lines>
+                  <ion-label>Seminar</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                <ion-item no-lines>
+                  <ion-label>Workshop</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                <ion-item no-lines>
+                  <ion-label>Environment</ion-label>
+                  <ion-checkbox></ion-checkbox>
+                </ion-item>
+                
+    </form>
+
+    <div style="text-align: center;">
+      <button class="next" ion-button type="submit" (click)="next()">Save</button>
+    </div>
+            </ion-list>
+
+          </div>
+
+          </ion-content>
