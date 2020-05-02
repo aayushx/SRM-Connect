@@ -25,7 +25,8 @@ export class DetailsPage {
   atime="19th Feb, 2019 16:34pm"
   items: any;
   upcheck: any;
-  
+  xx:any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, 
               public http: Http, public storage:Storage) {
                 this.value=navParams.get("detail")
@@ -118,9 +119,17 @@ answerid:answerid
   this.http.post('http://localhost:3000/doupvote',body).subscribe(res =>{
     
     if(res.json().status==500){
-      alert("you cannot vote again ");
+      
+      var body = {
+        userid:this.uid,
+        answerid:answerid
+      }
+      this.http.post('http://localhost:3000/delupvote',body).subscribe(res=>{
+        console.log(res.json())
+        this.xx="0"
+      })
     
-    }
+    }else{this.xx="1";}
   
       })
   console.log(answerid , this.uid)

@@ -100,7 +100,7 @@
             <span><div *ngIf="items.includes(comment.answerid) ; else notToday">
               <button ion-button clear class="vote" (click)="upvote(comment.answerid)">
                 <ion-icon name="arrow-round-up"></ion-icon>
-                &ensp;&ensp;{{comment.upvotes - comment.downvotes}}
+                &ensp;&ensp;{{comment.upvotes - comment.downvotes+xx}}
               </button>
             </div>
             <ng-template #notToday>kweHR;QOE</ng-template>
