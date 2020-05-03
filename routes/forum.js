@@ -359,5 +359,27 @@ router.post("/upvote",(req,res)=>{
             })
            
 })
+router.post("/delupvote",(req,res)=>{
+    
+    var userid = req.body.userid
+    var answerid = req.body.answerid
+    var sql = 'delete from upvotes where (userid) = ("'+userid+'") and (answerid)=("'+answerid+'");update answers set upvotes=upvotes-1 where answerid like ("'+amswerid+'")';
+    con.query(sql,(err,result)=>{
+        if(err){
+            console.log(err);
+            res.json({
+                success:false,
+                status:400
+            })
+        }
+        else{
+            res.json({
+                success:true,
+                status:200
+            })
+        }
+            })
+           
+})
 
 module.exports = router;
