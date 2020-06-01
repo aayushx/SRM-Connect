@@ -5,19 +5,20 @@ var methodOverride = require('method-override')//allows to use put and delete re
 var cors = require('cors');
 var mysql = require('mysql');//cross origin resource sharing enables ionic to communicate with server
 var app = express();
+var config = require('config.js');
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false   }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(cors());
 const router  = express.Router();
-const con = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"",
-    database:"connect_2",
-    
-    });
+var con = mysql.createConnection({
+    host: config.host,
+    user: config.user,
+    password: config.password,
+    database: config.database,
+
+});
 
 router.post('/uploadquestion',(req,res)=>{
     const question = req.body.question
@@ -381,5 +382,101 @@ router.post("/delupvote",(req,res)=>{
             })
            
 })
+router.post("/dodownvote",(req,res)=>{
+    var userid = req.body.userid
+    var answerid = req.body.answerid
+    var sql = 'select * from downvotes where (userid) = ("'+userid+'") and (answerid) = ("'+answerid+'")';
+    con.query(sql,(err,result)=>{
+if(result.length!=0){
+    
+    res.json({
+        success:false,
+        status:500
+    })
+}
+else{
+    var sql = 'insert into downvotes (userid,answerid) values ("'+userid+'","'+answerid+'")';
+    con.query(sql,(err,result)=>{
+        if(err){
+            console.log(err);
+            res.json({
+                success:false,
+                status:400
+            })
+        }
+        else{
+            res.json({
+                success:true,
+                status:200
+            })
+            var sql2 = 'select * from downvotes where (answerid) = ("'+answerid+'")'
+    con.query(sql2,(err,result)=>{
+        if(err){
+            console.log(err);
+        }
+        else{
+            // res.json(result)
+            console.log(result);
+            console.log(result.length);
+            var votes = result.length;
+            var sql3 = 'UPDATE answers SET downvotes = ("'+votes+'") WHERE answerid = ("'+answerid+'")'
+            con.query(sql3,(err,result)=>{
+                if(err) throw err;
+                else{
+                    console.log('done voting')
+                } 
+            })
+        }
+            })
+        }
+    })
+  
+}
+    })
+    
+})
+router.post("/downvote",(req,res)=>{
+    
+    var userid = req.body.userid
+    var sql = 'select * from downvotes where (userid) = ("'+userid+'")';
+    con.query(sql,(err,result)=>{
+        if(err){
+            console.log(err);
+            res.json({
+                success:false,
+                status:400
+            })
+        }
+        else{
+            res.json(result)
+            console.log(result);
+            console.log(result.length);
+        }
+            })
+           
+})
+router.post("/deldownvote",(req,res)=>{
+    
+    var userid = req.body.userid
+    var answerid = req.body.answerid
+    var sql = 'delete from downvotes where (userid) = ("'+userid+'") and (answerid)=("'+answerid+'");update answers set downvotes=downvotes-1 where answerid like ("'+amswerid+'")';
+    con.query(sql,(err,result)=>{
+        if(err){
+            console.log(err);
+            res.json({
+                success:false,
+                status:400
+            })
+        }
+        else{
+            res.json({
+                success:true,
+                status:200
+            })
+        }
+            })
+           
+})
+
 
 module.exports = router;
