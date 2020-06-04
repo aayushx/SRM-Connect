@@ -14,9 +14,9 @@ app.use(logger('dev'));
 app.use(methodOverride());
 app.use(cors());
 app.use(fileUpload());
-app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(express.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '500mb' }));
+app.use(bodyParser.json({ limit: '500mb' }));
+app.use(express.json({ limit: '500mb' }));
 const secret = 'RandomLettersAndNumbers'
 var mysql = require('mysql');
 var con = mysql.createConnection({
@@ -46,19 +46,23 @@ app.post("/signup", (req, res) => {
     const course = req.body.course
     const year = req.body.year
     const userid = Date.now();
-    const profpic = req.files.profpic
+    const im = req.files.profpic
     var sql = 'select * from users where (name) = ("' + name + '")';
     // console.log(username,password,age);
     con.query(sql, (err, result) => {
         if (result[0] == null) {
-            profpic.name.mv('./images', function (err) {
-                if (err)
-                    return res.status(500).send(err);
-        
-                res.send('File uploaded!');
-            });
-            const dd1 = path + '/' + profpic.name;
-            console.log(dd1);
+             
+            var path= 'C:/Users/HP/Desktop/SRM-Connect-BackEnd/SRM-Connect-BackEnd/uploads/'+im.name;
+   
+    im.mv(path, function (err) {
+        if (err){
+            return res.status(600).send(err);
+            console.log(err)}
+            console.log('File uploaded!');
+        });
+        const dd1 = im.name;
+    console.log(dd1);
+         
             let hash = bcrypt.hashSync(password, 10);
             var sql = 'insert into users (name,email,password,phone,regno,course,dept,year,batch,userid,image) values ("' + name + '","' + email + '","' + hash + '","' + phone + '","' + reg + '","' + course + '","' + dept + '","' + year + '","' + batch + '","' + userid + '","'+dd1+'")';
             con.query(sql, (err, result) => {
@@ -188,31 +192,18 @@ app.post("/disevents", (req, response) => {
     })
 });
 app.post("/uploadpic", (req, res) => {
-    const im = req.files.im
-    //         console.log(im);
-    //         var path= 'C:/Users/HP/connect-server/uploads/';
-    // console.log(path)
-    // var name= Date.now();
-    // var optionalObj = {'fileName': name, 'type':'jpg'};
-    // var image=base64ToImage(im,path,optionalObj); 
-    // if (!req.body.im || Object.keys(req.body.im).length === 0) {
-    //     return res.status(400).send('No files were uploaded.');
-    // }
-
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-
-
-
-    // Use the mv() method to place the file somewhere on your server
-    im.name.mv('./images', function (err) {
-        if (err)
+console.log(req.files.profpic)
+    const im = req.files.profpic
+    
+            var path= 'C:/Users/HP/Desktop/SRM-Connect-BackEnd/SRM-Connect-BackEnd/uploads/'+im.name;
+   
+    im.mv(path, function (err) {
+        if (err){
             return res.status(500).send(err);
-
-        res.send('File uploaded!');
-    });
-    var dd = path + '/' + image.fileName;
-    console.log(dd);
-    var sql = 'insert into images (images) values ("' + dd + '")';
+            console.log(err)}
+else{const dd1 = im.name;
+    console.log(dd1);
+    var sql = 'insert into images (images) values ("'+dd1+'")';
     con.query(sql, (err, result) => {
         if (err) {
             console.log(err);
@@ -227,7 +218,10 @@ app.post("/uploadpic", (req, res) => {
                 status: 200
             })
         }
-    })
+    })}
+        console.log('File uploaded!');
+    });
+    
 
 })
 app.post("/dispics", (req, res) => {
@@ -388,7 +382,7 @@ app.post("/feedback", (req, res) => {
         app.post("/forgotpass2", (req, res) => {
             const password = req.body.newpass
             let hash = bcrypt.hashSync(password, 10);
-            var sql = 'UPDATE users SET password = ("'+password+'") WHERE name = ("'+name+'")';
+            var sql = 'UPDATE users SET password = ("'+hash+'") WHERE name = ("'+name+'")';
             // console.log(username,password,age);
                   con.query(sql, (err, result) => {
                         if (err) {

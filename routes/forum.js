@@ -5,7 +5,7 @@ var methodOverride = require('method-override')//allows to use put and delete re
 var cors = require('cors');
 var mysql = require('mysql');//cross origin resource sharing enables ionic to communicate with server
 var app = express();
-var config = require('config.js');
+var config = require('../config');
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({ extended: false   }));
 app.use(bodyParser.json());
@@ -161,9 +161,9 @@ var date = req.body.date
 var time = req.body.time
 var upvotes = 0
 var downvotes = 0
-var username = req.body.username
 
-    var sql= 'insert into answers (questionid , answers , userid, date, time, upvotes, downvotes, username) values ("'+questionid+'","'+answers+'","'+userid+'","'+date+'","'+time+'","'+upvotes+'","'+downvotes+'","'+username+'")';
+
+    var sql= 'insert into answers (questionid , answers , userid, date, time, upvotes, downvotes) values ("'+questionid+'","'+answers+'","'+userid+'","'+date+'","'+time+'","'+upvotes+'","'+downvotes+'")';
 
     con.query(sql,(err,result)=>{
       
@@ -364,10 +364,11 @@ router.post("/delupvote",(req,res)=>{
     
     var userid = req.body.userid
     var answerid = req.body.answerid
-    var sql = 'delete from upvotes where (userid) = ("'+userid+'") and (answerid)=("'+answerid+'");update answers set upvotes=upvotes-1 where answerid like ("'+amswerid+'")';
-    con.query(sql,(err,result)=>{
-        if(err){
-            console.log(err);
+    var sql1 = 'delete from upvotes where (userid) = ("'+userid+'") and (answerid)=("'+answerid+'")'
+    var sql2 = 'update answers set upvotes=upvotes-1 where answerid = ("'+answerid+'")';
+    con.query(sql1,(err1,result1)=>{
+        if(err1){
+            console.log(err1);
             res.json({
                 success:false,
                 status:400
@@ -380,6 +381,15 @@ router.post("/delupvote",(req,res)=>{
             })
         }
             })
+            con.query(sql2,(err2,result2)=>{
+                if(err2){
+                    console.log(err2);
+                   
+                }
+                else{
+                 
+                }
+                    })
            
 })
 router.post("/dodownvote",(req,res)=>{
